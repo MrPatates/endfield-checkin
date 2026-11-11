@@ -20,7 +20,7 @@ from typing import Any
 from . import __version__
 from .config import Settings
 from .scheduler import Scheduler
-from .service import CheckinService
+from .service import CheckinService, nickname_label
 from .skport import AccountError, SkportClient, SkportError, normalize_token
 from .store import Store
 
@@ -28,7 +28,8 @@ log = logging.getLogger(__name__)
 
 STATIC_DIR = Path(__file__).with_name("static")
 STATIC_TYPES = {".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8",
-                ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml", ".png": "image/png"}
+                ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml", ".png": "image/png",
+                ".json": "application/json; charset=utf-8"}
 ROLE_RE = re.compile(r"\d+_\d+_\d+")
 MAX_BODY = 16 * 1024
 CSP = ("default-src 'self'; img-src 'self' https://static.skport.com; style-src 'self'; "
@@ -51,9 +52,10 @@ class WebApp:
         self.client = client
         self.csrf = secrets.token_urlsafe(32)
         self.static = {}
-        for path in STATIC_DIR.iterdir():
-            if path.suffix in STATIC_TYPES:
-                self.static[path.name] = (path.read_bytes(), STATIC_TYPES[path.suffix])
+        for path in STATIC_DIR.rglob("*"):  # e.g. "app.js", "lang/fr_FR.json"
+            if path.is_file() and path.suffix in STATIC_TYPES:
+                key = path.relative_to(STATIC_DIR).as_posix()
+                self.static[key] = (path.read_bytes(), STATIC_TYPES[path.suffix])
 
     # --------------------------------------------------------------- views
     def public_state(self) -> dict[str, Any]:
@@ -82,6 +84,7 @@ class WebApp:
                 "check_interval": settings.check_interval_min,
                 "retry_interval": settings.retry_interval_min,
                 "language": settings.language,
+                "ui_language": settings.ui_language,
                 "notify": settings.notify if settings.discord_webhook else "none",
                 "discord": bool(settings.discord_webhook),
                 "password_protected": bool(settings.webui_password),
@@ -115,14 +118,20 @@ class WebApp:
                 raise ApiError(400, "bad_request")
             if self.store.has_token(token):
                 raise ApiError(409, "duplicate")
-            self.client.open_session(token)  # validates the token before saving it
+            session = self.client.open_session(token)  # validates the token before saving it
         except AccountError as exc:
             raise ApiError(400, exc.kind, str(exc)) from exc
         except SkportError as exc:
             raise ApiError(502, exc.kind, str(exc)) from exc
+        auto_name = not name
+        if auto_name and not role:
+            try:  # name the account after its in-game nickname(s)
+                name = nickname_label([r.nickname for r in self.client.get_roles(session)])
+            except SkportError as exc:
+                log.debug("nickname lookup failed: %s", exc)
         if not name:
             name = f"Account {len(self.store.list_accounts()) + 1}"
-        account = self.store.add_account(name, token, email, password, role)
+        account = self.store.add_account(name, token, email, password, role, auto_name=auto_name)
         self.store.add_event("added", account["name"])
         log.info("account %r added (%s)", account["name"], method)
         self.scheduler.trigger(account["id"])

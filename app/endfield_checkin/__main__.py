@@ -57,7 +57,7 @@ def main(argv: list[str] | None = None) -> int:
     store = Store(settings.data_dir, settings.env_tokens, settings.env_account_name)
     store.prune_state()
     client = SkportClient(settings.language, settings.as_base, settings.zonai_base)
-    notifier = Notifier(settings.discord_webhook, settings.notify, settings.language)
+    notifier = Notifier(settings.discord_webhook, settings.notify, settings.notification_language)
     service = CheckinService(store, client, notifier)
     accounts = store.list_accounts()
     log.info("Endfield Check-in %s: %d account(s), check every %d min, uid %d",

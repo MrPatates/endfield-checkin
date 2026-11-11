@@ -7,6 +7,7 @@
   <title>Endfield Check-in</title>
   <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/i18n.js" defer></script>
   <script src="/static/app.js" defer></script>
 </head>
 <body>
@@ -37,11 +38,6 @@
         <button type="button" role="tab" data-method="password" aria-selected="false" data-i18n="methodPassword"></button>
       </div>
       <form id="add-form" autocomplete="off" novalidate>
-        <label class="field">
-          <span data-i18n="name"></span>
-          <input name="name" maxlength="60" data-i18n-placeholder="namePlaceholder">
-        </label>
-
         <div data-panel="token">
           <label class="field">
             <span>ACCOUNT_TOKEN</span>

@@ -42,6 +42,12 @@ class RunSummary:
         return "transient" in self.outcomes.values()
 
 
+def nickname_label(nicknames: list[str]) -> str:
+    """Account display name built from the in-game nicknames ("" when unknown)."""
+    unique = list(dict.fromkeys(n.strip() for n in nicknames if n and n.strip()))
+    return " / ".join(unique)[:60]
+
+
 def _flags(items: Any) -> list[dict[str, Any]]:
     return [
         {"id": str(item.get("awardId") or ""), "done": bool(item.get("done")), "available": bool(item.get("available"))}
@@ -110,6 +116,12 @@ class CheckinService:
             return self._failed(account, previous, state, "internal", repr(exc), action=False)
 
         roles = [role_view(r) for r in results]
+        if account.get("auto_name"):
+            nickname = nickname_label([r["nickname"] for r in roles])
+            if nickname and nickname != name:
+                log.info("[%s] renamed to in-game nickname %r", name, nickname)
+                self.store.rename(account_id, nickname)
+                account["name"] = name = nickname
         resources = dict(previous.get("resources") or {})
         for result in results:
             for key in ("calendar", "first"):
@@ -166,7 +178,7 @@ class CheckinService:
             return cached
         session = self._open_session(account)
         override = (account.get("role_override") or "").strip()
-        roles = [Role(key=override, nickname=override)] if override else self.client.get_roles(session)
+        roles = [Role(key=override)] if override else self.client.get_roles(session)
         if not roles:
             raise AccountError("no Arknights: Endfield role is bound to this SKPORT account", kind="no_role")
         cached = _Cached(session=session, roles=roles, created=time.time())

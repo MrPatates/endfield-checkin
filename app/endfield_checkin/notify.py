@@ -7,30 +7,29 @@ import json
 import logging
 import urllib.error
 import urllib.request
+from pathlib import Path
 from typing import Any
 
 log = logging.getLogger(__name__)
 
-TEXT = {
-    "en": {
-        "claimed": "Daily check-in claimed",
-        "error": "Check-in failed",
-        "action": "Action required",
-        "recovered": "Check-in working again",
-        "rewards": "Rewards",
-        "progress": "Check-ins this month",
-        "none": "none",
-    },
-    "fr": {
-        "claimed": "Récompense quotidienne récupérée",
-        "error": "Échec du check-in",
-        "action": "Action requise",
-        "recovered": "Le check-in fonctionne de nouveau",
-        "rewards": "Récompenses",
-        "progress": "Connexions ce mois-ci",
-        "none": "aucune",
-    },
-}
+LANG_DIR = Path(__file__).with_name("static") / "lang"
+
+
+def discord_text(language: str) -> dict[str, str]:
+    """Discord strings for an Unraid locale code, falling back to English per key."""
+    def load(code: str) -> dict[str, Any]:
+        try:
+            data = json.loads((LANG_DIR / f"{code}.json").read_text(encoding="utf-8")).get("discord")
+        except (OSError, ValueError, AttributeError):
+            return {}
+        return data if isinstance(data, dict) else {}
+
+    text = load("en_US")
+    if language != "en_US" and "/" not in language:
+        for key, value in load(language).items():
+            if key in text and isinstance(value, str) and value.strip():
+                text[key] = value
+    return text
 
 
 def format_rewards(rewards: list[dict[str, Any]], empty: str) -> str:
@@ -39,10 +38,10 @@ def format_rewards(rewards: list[dict[str, Any]], empty: str) -> str:
 
 
 class Notifier:
-    def __init__(self, webhook: str, mode: str = "all", language: str = "en", timeout: float = 15):
+    def __init__(self, webhook: str, mode: str = "all", language: str = "en_US", timeout: float = 15):
         self.webhook = webhook
         self.mode = mode
-        self.text = TEXT["fr" if language.lower().startswith("fr") else "en"]
+        self.text = discord_text(language)
         self.timeout = timeout
 
     @property

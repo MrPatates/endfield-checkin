@@ -15,7 +15,8 @@ Projet communautaire, non affilié à GRYPHLINE, Hypergryph ou SKPORT.
 - Connexion par **jeton de compte** (`ACCOUNT_TOKEN`) ou par **e-mail + mot de passe**.
 - Plusieurs comptes, et tous les personnages Endfield de chaque compte (détection automatique du serveur).
 - Vérification toutes les 2 h par défaut : la récompense est récupérée dès qu'elle est disponible, quelle que soit l'heure de réinitialisation de la région du serveur. Après une erreur réseau ou serveur, nouvel essai au bout de 15 min.
-- Interface web en français ou en anglais : calendrier du mois, bonus des trois premières connexions, dernières récompenses, historique et bouton « Récupérer maintenant ».
+- Interface web dans les 27 langues proposées par Unraid, choisie automatiquement selon le navigateur ou fixée avec `UI_LANGUAGE` ; l'arabe s'affiche de droite à gauche. Elle montre le calendrier du mois, le bonus des trois premières connexions, les dernières récompenses, l'historique et un bouton « Récupérer maintenant ».
+- Chaque compte prend automatiquement le nom du pseudo en jeu.
 - Notifications Discord optionnelles : récompenses, erreurs, jeton expiré.
 - Image légère (~50 Mo), Python sans aucune dépendance externe. Le conteneur passe en utilisateur `99:100` (nobody:users) après le démarrage.
 
@@ -45,7 +46,7 @@ Les mises à jour sont proposées dans l'onglet Docker, comme pour les autres co
 1. Ouvre <https://game.skport.com/endfield/sign-in> et connecte-toi.
 2. Appuie sur **F12**. Dans Chrome/Edge, va dans **Application → Cookies** ; dans Firefox, va dans **Stockage → Cookies**.
 3. Sélectionne `https://game.skport.com` et copie la valeur du cookie **`ACCOUNT_TOKEN`**.
-4. Colle-la dans l'interface web, puis clique sur **Connecter le compte**. Le jeton est vérifié avant d'être enregistré, puis une première récupération démarre.
+4. Colle-la dans l'interface web, puis clique sur **Connecter le compte**. Le jeton est vérifié avant d'être enregistré, le compte prend le nom de ton pseudo en jeu, puis une première récupération démarre.
 
 **Méthode e-mail + mot de passe**
 
@@ -58,12 +59,13 @@ Quand un jeton expire sans mot de passe enregistré, l'interface affiche **Actio
 | Variable | Défaut | Rôle |
 | --- | --- | --- |
 | `CHECK_INTERVAL` | `120` | Minutes entre deux vérifications (30–720). |
-| `SKPORT_LANGUAGE` | `en` | Langue des noms de récompenses : `en`, `fr_FR`, `de_DE`, `it_IT`, `es_MX`, `pt_BR`, `ru_RU`, `ja`, `ko`, `zh_Hans`, `zh_Hant`, `id_ID`, `th_TH`, `vi_VN`. `fr_FR` met aussi les notifications Discord en français. |
+| `UI_LANGUAGE` | `auto` | Langue de l'interface web et des notifications Discord. `auto` suit la langue de chaque navigateur ; sinon, une des langues d'Unraid : `ar_AR`, `bn_BN`, `ca_CA`, `cs_CZ`, `da_DA`, `de_DE`, `el_GR`, `en_US`, `es_ES`, `fr_FR`, `hr_HR`, `hu_HU`, `it_IT`, `ja_JA`, `ko_KO`, `lv_LV`, `nl_NL`, `no_NO`, `pl_PL`, `pt_BR`, `pt_PT`, `ro_RO`, `ru_RU`, `sv_SE`, `uk_UA`, `zh_CN`, `zh_TW`. En `auto`, les notifications suivent `SKPORT_LANGUAGE`. |
+| `SKPORT_LANGUAGE` | `en` | Langue des noms de récompenses, selon ce que propose SKPORT : `en`, `fr_FR`, `de_DE`, `it_IT`, `es_MX`, `pt_BR`, `ru_RU`, `ja`, `ko`, `zh_Hans`, `zh_Hant`, `id_ID`, `th_TH`, `vi_VN`. |
 | `DISCORD_WEBHOOK` | vide | URL de webhook Discord (optionnelle). |
 | `NOTIFY` | `all` | `all` = récompenses et erreurs, `errors` = erreurs seulement, `none` = aucune notification. |
 | `WEBUI_PASSWORD` | vide | Protège l'interface par un mot de passe (n'importe quel nom d'utilisateur). |
 | `ACCOUNT_TOKEN` | vide | Avancé : jeton(s) séparés par des virgules, à la place de l'interface web. |
-| `ACCOUNT_NAME` | vide | Nom affiché pour les comptes définis par `ACCOUNT_TOKEN`. |
+| `ACCOUNT_NAME` | vide | Nom affiché pour les comptes définis par `ACCOUNT_TOKEN`. Vide : le pseudo en jeu est utilisé. |
 | `RETRY_INTERVAL` | `15` | Minutes avant un nouvel essai après une erreur (5–240). |
 | `PUID` / `PGID` | `99` / `100` | Propriétaire des fichiers de `/config`. |
 | `LOG_LEVEL` | `INFO` | `DEBUG`, `INFO`, `WARNING`, `ERROR`. |
@@ -77,6 +79,10 @@ Unraid transmet `TZ` automatiquement : les heures affichées et les logs suivent
 - Les actions de l'interface sont protégées contre le CSRF (jeton + JSON obligatoire + contrôle de l'origine), et une politique CSP stricte est appliquée.
 - Les requêtes vont uniquement vers `as.gryphline.com`, `zonai.skport.com`, et vers ton webhook Discord si tu en configures un. Les icônes des récompenses sont chargées par ton navigateur depuis `static.skport.com`.
 
+## Traductions
+
+Les catalogues de l'interface sont dans [`app/endfield_checkin/static/lang/`](app/endfield_checkin/static/lang/), un fichier JSON par langue d'Unraid, avec `en_US.json` comme référence. Une entrée manquante ou vide s'affiche en anglais. La plupart des traductions ont été générées automatiquement et n'ont pas été relues par des locuteurs natifs : les corrections sont bienvenues. Garde les clés et les balises comme `{n}` ou `{name}` intactes, utilise du texte brut uniquement, puis lance les tests.
+
 ## Limites
 
 Ce bot repose sur l'API non documentée du site SKPORT, analysée à partir de la page officielle et de projets open source. Il peut cesser de fonctionner si SKPORT modifie son API. L'automatisation peut aussi être contraire aux conditions d'utilisation du service : utilise-le à tes risques.
@@ -84,7 +90,7 @@ Ce bot repose sur l'API non documentée du site SKPORT, analysée à partir de l
 ## Développement
 
 ```bash
-cd tests && python3 -m unittest discover -s . -t . -v   # 25 tests, faux serveur SKPORT inclus
+cd tests && python3 -m unittest discover -s . -t . -v   # faux serveur SKPORT inclus
 podman build --format docker -t endfield-checkin:dev .  # ou docker build
 ```
 

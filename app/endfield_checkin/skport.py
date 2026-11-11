@@ -183,7 +183,8 @@ class SkportClient:
             with urllib.request.urlopen(request, timeout=self.timeout) as response:
                 status, raw = response.status, response.read()
         except urllib.error.HTTPError as exc:
-            status, raw = exc.code, exc.read()
+            with exc:
+                status, raw = exc.code, exc.read()
         except (urllib.error.URLError, TimeoutError, OSError) as exc:
             reason = getattr(exc, "reason", exc)
             raise NetworkError(f"{urllib.parse.urlsplit(url).netloc}: {reason}") from exc

@@ -50,6 +50,7 @@ class Store:
             self._env_accounts.append({
                 "id": "env-" + token_fingerprint(token),
                 "name": name,
+                "auto_name": not env_name,  # follow the in-game nickname
                 "source": "env",
                 "account_token": token,
                 "created": None,
@@ -104,11 +105,13 @@ class Store:
             return any(a["account_token"] == token for a in self._env_accounts + self._accounts)
 
     def add_account(self, name: str, token: str, email: str | None = None,
-                    password: str | None = None, role_override: str = "") -> dict[str, Any]:
+                    password: str | None = None, role_override: str = "",
+                    auto_name: bool = False) -> dict[str, Any]:
         with self._lock:
             account = {
                 "id": secrets.token_hex(6),
                 "name": name,
+                "auto_name": auto_name,
                 "source": "web",
                 "account_token": token,
                 "role_override": role_override,
@@ -126,6 +129,18 @@ class Store:
             for account in self._accounts:
                 if account["id"] == account_id:
                     account["account_token"] = token
+                    self._save_accounts()
+                    return
+
+    def rename(self, account_id: str, name: str) -> None:
+        with self._lock:
+            for account in self._env_accounts:
+                if account["id"] == account_id:
+                    account["name"] = name
+                    return
+            for account in self._accounts:
+                if account["id"] == account_id:
+                    account["name"] = name
                     self._save_accounts()
                     return
 

@@ -116,6 +116,22 @@ class ServiceTest(unittest.TestCase):
         self.assertEqual(self.fake.count("binding"), 0)
         self.assertEqual(self.fake.claimed, {"3_999_2"})
 
+    def test_auto_name_follows_nickname_but_not_chosen_names(self):
+        store = Store(Path(self.tmp.name), (VALID_TOKEN,))
+        chosen = store.add_account("Mine", "c2Vjb25kLXRva2Vu")
+        self.fake.tokens.add("c2Vjb25kLXRva2Vu")
+        service = CheckinService(store, SkportClient("en", self.fake.url, self.fake.url, timeout=5), self.notifier)
+        env = store.list_accounts()[0]
+        self.assertEqual((env["name"], env["auto_name"]), ("Unraid", True))
+        service.run()
+        self.assertEqual(store.get_account(env["id"])["name"], "Endmin")
+        self.assertEqual(store.get_account(chosen["id"])["name"], "Mine")
+        self.fake.roles[0]["nickname"] = "Renamed"
+        self.fake.roles.append({"roleId": "77", "serverId": "3", "nickname": "Alt"})
+        service.forget(env["id"])
+        service.run()
+        self.assertEqual(store.get_account(env["id"])["name"], "Renamed / Alt")
+
     def test_env_accounts_and_persistence(self):
         store = Store(Path(self.tmp.name), (VALID_TOKEN,), "Unraid")
         account = store.list_accounts()[0]

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026.11.12
+
+- Web UI and Discord notifications in the 27 languages offered by Unraid: automatic browser detection, or a fixed language with the new `UI_LANGUAGE` template setting. Arabic is shown right-to-left.
+- Accounts are named automatically after the in-game nickname; the display name field was removed.
+- An HTTP error response from SKPORT is now always closed.
+
 ## 2026.11.11
 
 First release.

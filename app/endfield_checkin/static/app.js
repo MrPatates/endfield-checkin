@@ -1,204 +1,43 @@
 "use strict";
 
-const I18N = {
-  en: {
-    nextCheck: "Next check",
-    runAll: "Check all now",
-    running: "Checking…",
-    addTitle: "Connect a SKPORT account",
-    addIntro: "The bot checks the SKPORT sign-in page regularly and claims the daily reward of every Endfield character bound to the account.",
-    methodToken: "Account token (recommended)",
-    methodPassword: "Email + password",
-    name: "Display name",
-    namePlaceholder: "e.g. Main account",
-    tokenPlaceholder: "Paste the ACCOUNT_TOKEN cookie value",
-    tokenHelpTitle: "How do I get my ACCOUNT_TOKEN?",
-    tokenHelp: [
-      "Open the SKPORT sign-in page above in your browser and log in to your account.",
-      "Press F12 to open the developer tools.",
-      "Chrome / Edge: “Application” tab → Cookies. Firefox: “Storage” tab → Cookies.",
-      "Select https://game.skport.com and copy the value of the ACCOUNT_TOKEN cookie.",
-      "Paste it here. Never share it: it gives access to your account. If you cannot find it, use the email method.",
-    ],
-    email: "Email",
-    password: "Password",
-    remember: "Remember the email and password to log in again automatically when the session expires (stored in /config on your server)",
-    passwordNote: "Only the session token is kept unless you tick the box above. Accounts created through Google, Apple, etc. have no password: use the token method.",
-    advanced: "Advanced options",
-    roleOverride: "Character (sk-game-role)",
-    roleOverrideHelp: "Leave empty: characters are detected automatically. Only fill it in if detection fails.",
-    connect: "Connect account",
-    connecting: "Checking the account…",
-    added: "Account connected. First check running…",
-    settingsTitle: "Settings",
-    settingsHint: "These values are set in the container template (Unraid: Docker → Edit).",
-    historyTitle: "History",
-    noHistory: "Nothing yet.",
-    noAccounts: "No account connected yet. Use the form below to connect your SKPORT account.",
-    disclaimer: "Community project, not affiliated with GRYPHLINE, Hypergryph or SKPORT. Use at your own risk.",
-    sourceEnv: "from template",
-    sourceWeb: "added here",
-    token: "token",
-    autoRelogin: "auto re-login",
-    runOne: "Claim now",
-    remove: "Remove",
-    removeConfirm: "Remove the account “{name}”? Its token will be deleted from the server.",
-    envNoRemove: "Defined by the ACCOUNT_TOKEN variable: remove it from the container template.",
-    lastCheck: "Last check: {t}",
-    lastClaim: "Last claim: {t}",
-    never: "never",
-    status: {
-      ok: "Today's reward claimed ✓",
-      waiting: "Not claimed yet",
-      error: "Error, retrying soon",
-      action_required: "Action required",
-      pending: "Waiting for first check",
-    },
-    level: "Lv. {n}",
-    progress: "Check-ins this month: {done} / {total}",
-    bonus: "Extra bonus (first 3 check-ins)",
-    day: "Day {n}",
-    lastRewards: "Last rewards: {r}",
-    kinds: {
-      network: "Cannot reach SKPORT (network).",
-      api_error: "Unexpected SKPORT answer.",
-      session_expired: "SKPORT session rejected.",
-      token_rejected: "The account token is invalid or expired: connect the account again.",
-      login_failed: "Login refused: check the email and password.",
-      no_role: "No Endfield character is bound to this SKPORT account.",
-      internal: "Internal error, see the container logs.",
-      missing_fields: "Enter the email and the password.",
-      missing_token: "Paste the ACCOUNT_TOKEN value.",
-      invalid_role: "Invalid character format (expected 3_<uid>_<server>).",
-      duplicate: "This account is already connected.",
-      env_account: "This account comes from the container template.",
-      not_found: "Account not found.",
-      bad_csrf: "Session expired, reload the page.",
-    },
-    events: {
-      claimed: "Claimed",
-      error: "Error",
-      action_required: "Action required",
-      recovered: "Working again",
-      added: "Account connected",
-      removed: "Account removed",
-    },
-    settings: {
-      interval: "Check interval",
-      retry: "Retry after an error",
-      language: "Reward language",
-      notify: "Discord notifications",
-      password: "Web UI password",
-      timezone: "Time zone",
-    },
-    minutes: "{n} min",
-    notify: { all: "claims and errors", errors: "errors only", none: "off" },
-    yes: "yes",
-    no: "no",
-    inTime: "in {d}",
-    now: "now",
-  },
-  fr: {
-    nextCheck: "Prochaine vérification",
-    runAll: "Tout vérifier maintenant",
-    running: "Vérification…",
-    addTitle: "Connecter un compte SKPORT",
-    addIntro: "Le bot consulte régulièrement la page de connexion SKPORT et récupère la récompense quotidienne de chaque personnage Endfield lié au compte.",
-    methodToken: "Jeton de compte (recommandé)",
-    methodPassword: "E-mail + mot de passe",
-    name: "Nom affiché",
-    namePlaceholder: "ex. Compte principal",
-    tokenPlaceholder: "Colle la valeur du cookie ACCOUNT_TOKEN",
-    tokenHelpTitle: "Comment récupérer mon ACCOUNT_TOKEN ?",
-    tokenHelp: [
-      "Ouvre la page de connexion SKPORT ci-dessus dans ton navigateur et connecte-toi à ton compte.",
-      "Appuie sur F12 pour ouvrir les outils de développement.",
-      "Chrome / Edge : onglet « Application » → Cookies. Firefox : onglet « Stockage » → Cookies.",
-      "Sélectionne https://game.skport.com et copie la valeur du cookie ACCOUNT_TOKEN.",
-      "Colle-la ici. Ne la partage jamais : elle donne accès à ton compte. Si tu ne la trouves pas, utilise la méthode e-mail.",
-    ],
-    email: "E-mail",
-    password: "Mot de passe",
-    remember: "Mémoriser l'e-mail et le mot de passe pour se reconnecter automatiquement quand la session expire (stockés dans /config sur ton serveur)",
-    passwordNote: "Seul le jeton de session est conservé, sauf si tu coches la case ci-dessus. Les comptes créés via Google, Apple, etc. n'ont pas de mot de passe : utilise la méthode du jeton.",
-    advanced: "Options avancées",
-    roleOverride: "Personnage (sk-game-role)",
-    roleOverrideHelp: "Laisse vide : les personnages sont détectés automatiquement. À remplir seulement si la détection échoue.",
-    connect: "Connecter le compte",
-    connecting: "Vérification du compte…",
-    added: "Compte connecté. Première vérification en cours…",
-    settingsTitle: "Réglages",
-    settingsHint: "Ces valeurs se modifient dans le template du conteneur (Unraid : Docker → Edit).",
-    historyTitle: "Historique",
-    noHistory: "Rien pour l'instant.",
-    noAccounts: "Aucun compte connecté. Utilise le formulaire ci-dessous pour connecter ton compte SKPORT.",
-    disclaimer: "Projet communautaire, non affilié à GRYPHLINE, Hypergryph ou SKPORT. Utilisation à tes risques.",
-    sourceEnv: "via le template",
-    sourceWeb: "ajouté ici",
-    token: "jeton",
-    autoRelogin: "reconnexion auto",
-    runOne: "Récupérer maintenant",
-    remove: "Supprimer",
-    removeConfirm: "Supprimer le compte « {name} » ? Son jeton sera effacé du serveur.",
-    envNoRemove: "Défini par la variable ACCOUNT_TOKEN : retire-le du template du conteneur.",
-    lastCheck: "Dernière vérification : {t}",
-    lastClaim: "Dernière récupération : {t}",
-    never: "jamais",
-    status: {
-      ok: "Récompense du jour récupérée ✓",
-      waiting: "Pas encore récupérée",
-      error: "Erreur, nouvel essai bientôt",
-      action_required: "Action requise",
-      pending: "En attente de la première vérification",
-    },
-    level: "Niv. {n}",
-    progress: "Connexions ce mois-ci : {done} / {total}",
-    bonus: "Bonus (trois premières connexions)",
-    day: "Jour {n}",
-    lastRewards: "Dernières récompenses : {r}",
-    kinds: {
-      network: "SKPORT est injoignable (réseau).",
-      api_error: "Réponse inattendue de SKPORT.",
-      session_expired: "Session SKPORT refusée.",
-      token_rejected: "Le jeton du compte est invalide ou expiré : reconnecte le compte.",
-      login_failed: "Connexion refusée : vérifie l'e-mail et le mot de passe.",
-      no_role: "Aucun personnage Endfield n'est lié à ce compte SKPORT.",
-      internal: "Erreur interne, consulte les logs du conteneur.",
-      missing_fields: "Saisis l'e-mail et le mot de passe.",
-      missing_token: "Colle la valeur de l'ACCOUNT_TOKEN.",
-      invalid_role: "Format de personnage invalide (attendu : 3_<uid>_<serveur>).",
-      duplicate: "Ce compte est déjà connecté.",
-      env_account: "Ce compte provient du template du conteneur.",
-      not_found: "Compte introuvable.",
-      bad_csrf: "Session expirée, recharge la page.",
-    },
-    events: {
-      claimed: "Récupéré",
-      error: "Erreur",
-      action_required: "Action requise",
-      recovered: "Fonctionne de nouveau",
-      added: "Compte connecté",
-      removed: "Compte supprimé",
-    },
-    settings: {
-      interval: "Intervalle de vérification",
-      retry: "Nouvel essai après erreur",
-      language: "Langue des récompenses",
-      notify: "Notifications Discord",
-      password: "Mot de passe de l'interface",
-      timezone: "Fuseau horaire",
-    },
-    minutes: "{n} min",
-    notify: { all: "récupérations et erreurs", errors: "erreurs seulement", none: "désactivées" },
-    yes: "oui",
-    no: "non",
-    inTime: "dans {d}",
-    now: "maintenant",
-  },
-};
+let T = {};
+let LOCALE = "en-US";
+let languages = {};
+let languageCode = null;
+let languageSetting = null;
 
-const LANG = (navigator.language || "en").toLowerCase().startsWith("fr") ? "fr" : "en";
-const T = I18N[LANG];
+async function fetchJson(path) {
+  const response = await fetch(path, { cache: "no-cache", credentials: "same-origin" });
+  if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`);
+  return response.json();
+}
+
+/* setting: "auto" (browser languages) or an Unraid locale code such as "fr_FR". */
+async function loadLanguage(setting) {
+  if (!Object.keys(languages).length) languages = await fetchJson("/static/lang/languages.json");
+  const supported = Object.keys(languages);
+  const browser = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
+  const code = setting && setting !== "auto" && languages[setting] ? setting : EndfieldI18n.resolveLanguage(browser, supported);
+  languageSetting = setting || "auto";
+  if (code === languageCode) return;
+  const master = await fetchJson("/static/lang/en_US.json");
+  let catalog = {};
+  if (code !== "en_US") {
+    try { catalog = await fetchJson(`/static/lang/${code}.json`); } catch (_) { /* English fallback */ }
+  }
+  T = EndfieldI18n.mergeCatalog(master, catalog);
+  if (languages[code].dir === "rtl") T = EndfieldI18n.isolateLatin(T);
+  languageCode = code;
+  LOCALE = languages[code].bcp47;
+  document.documentElement.lang = LOCALE;
+  document.documentElement.dir = languages[code].dir === "rtl" ? "rtl" : "ltr";
+  applyStaticTranslations();
+}
+
+function languageLabel() {
+  const name = (languages[languageCode] || {}).name || languageCode;
+  return languageSetting === "auto" ? fmt(T.uiLanguageAuto, { lang: name }) : name;
+}
 const $ = (selector, root = document) => root.querySelector(selector);
 let state = null;
 let method = "token";
@@ -207,6 +46,11 @@ let pollTimer = null;
 
 function fmt(text, values = {}) {
   return text.replace(/\{(\w+)\}/g, (_, key) => (key in values ? values[key] : ""));
+}
+
+/* Keeps Latin values such as "1 h 05" or "…ZW4=" in order inside right-to-left text. */
+function bidi(text) {
+  return document.documentElement.dir === "rtl" ? `\u2068${text}\u2069` : text;
 }
 
 function el(tag, className, text) {
@@ -218,7 +62,7 @@ function el(tag, className, text) {
 
 function formatTime(ts) {
   if (!ts) return T.never;
-  return new Intl.DateTimeFormat(LANG, { dateStyle: "short", timeStyle: "short" }).format(new Date(ts * 1000));
+  return new Intl.DateTimeFormat(LOCALE, { dateStyle: "short", timeStyle: "short" }).format(new Date(ts * 1000));
 }
 
 function formatDelay(seconds) {
@@ -226,15 +70,14 @@ function formatDelay(seconds) {
   const minutes = Math.round(seconds / 60);
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
-  return fmt(T.inTime, { d: h ? `${h} h ${String(m).padStart(2, "0")}` : `${m} min` });
+  return fmt(T.inTime, { d: bidi(h ? `${h} h ${String(m).padStart(2, "0")}` : `${m} min`) });
 }
 
 function errorText(kind, detail) {
-  return T.kinds[kind] || detail || kind || "?";
+  return (T.kinds || {})[kind] || detail || kind || "?";
 }
 
 function applyStaticTranslations() {
-  document.documentElement.lang = LANG;
   document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = T[node.dataset.i18n]; });
   document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => { node.placeholder = T[node.dataset.i18nPlaceholder]; });
   document.querySelectorAll("[data-i18n-list]").forEach((node) => {
@@ -323,7 +166,7 @@ function renderAccount(account) {
   const s = account.state || {};
   const status = accountStatus(account);
   $(".account-name", node).textContent = account.name;
-  const meta = [account.source === "env" ? T.sourceEnv : T.sourceWeb, `${T.token} ${account.token_hint}`];
+  const meta = [account.source === "env" ? T.sourceEnv : T.sourceWeb, `${T.token} ${bidi(account.token_hint)}`];
   if (account.auto_relogin) meta.push(T.autoRelogin);
   $(".account-meta", node).textContent = meta.join(" · ");
   const badge = $(".status", node);
@@ -368,6 +211,7 @@ function renderSettings() {
     [T.settings.notify, T.notify[s.notify] || s.notify],
     [T.settings.password, s.password_protected ? T.yes : T.no],
     [T.settings.timezone, state.timezone || "UTC"],
+    [T.settings.uiLanguage, languageLabel()],
   ];
   $("#settings").replaceChildren(...rows.flatMap(([k, v]) => [el("dt", null, k), el("dd", null, v)]));
 }
@@ -418,9 +262,11 @@ function showBanner(text, kind = "error") {
 async function refresh() {
   try {
     state = await api("/api/state");
+    await loadLanguage(state.settings.ui_language);
     showBanner("");
     render();
   } catch (error) {
+    if (!languageCode) await loadLanguage("auto").catch(() => {});
     showBanner(error.message);
   }
   schedulePoll();
@@ -464,7 +310,7 @@ async function submitAccount(event) {
   const status = $("#add-status");
   const button = $("button[type=submit]", form);
   const data = new FormData(form);
-  const body = { method, name: data.get("name"), role: data.get("role") };
+  const body = { method, role: data.get("role") };
   if (method === "token") body.token = data.get("token");
   else Object.assign(body, { email: data.get("email"), password: data.get("password"), remember: data.get("remember") === "on" });
   button.disabled = true;
@@ -488,7 +334,6 @@ async function submitAccount(event) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  applyStaticTranslations();
   document.querySelectorAll("[role=tab]").forEach((tab) => tab.addEventListener("click", () => setMethod(tab.dataset.method)));
   $("#add-form").addEventListener("submit", submitAccount);
   $("#run-all").addEventListener("click", () => runNow(null));

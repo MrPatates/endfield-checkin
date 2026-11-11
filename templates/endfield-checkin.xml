@@ -21,6 +21,9 @@
   <MinVer>6.12.0</MinVer>
   <Requires>Internet access and a SKPORT account with at least one Arknights: Endfield character.</Requires>
   <Changes>
+### 2026.11.12
+- Web UI and notifications in the 27 Unraid languages (automatic or fixed with UI_LANGUAGE).
+- Accounts are named after the in-game nickname.
 ### 2026.11.11
 - First release.
   </Changes>
@@ -34,12 +37,13 @@
   <Config Name="Web UI port" Target="8080" Default="8080" Mode="tcp" Description="Port of the web UI where you connect your SKPORT account and see the rewards." Type="Port" Display="always" Required="true" Mask="false">8080</Config>
   <Config Name="Appdata" Target="/config" Default="/mnt/user/appdata/endfield-checkin" Mode="rw" Description="Accounts (tokens), last results and history. Keep it private: it contains your account tokens." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/endfield-checkin</Config>
   <Config Name="Check interval (minutes)" Target="CHECK_INTERVAL" Default="120" Mode="" Description="How often the sign-in status is checked (30-720). Each check is one light request per character; the reward is claimed as soon as it is available." Type="Variable" Display="always" Required="true" Mask="false">120</Config>
-  <Config Name="Reward language" Target="SKPORT_LANGUAGE" Default="en|fr_FR|de_DE|it_IT|es_MX|pt_BR|ru_RU|ja|ko|zh_Hans|zh_Hant|id_ID|th_TH|vi_VN" Mode="" Description="Language of the reward names shown in the web UI and notifications. fr_FR also switches Discord notifications to French." Type="Variable" Display="always" Required="true" Mask="false">en</Config>
+  <Config Name="Reward language" Target="SKPORT_LANGUAGE" Default="en|fr_FR|de_DE|it_IT|es_MX|pt_BR|ru_RU|ja|ko|zh_Hans|zh_Hant|id_ID|th_TH|vi_VN" Mode="" Description="Language of the reward names returned by SKPORT (only the languages SKPORT supports)." Type="Variable" Display="always" Required="true" Mask="false">en</Config>
+  <Config Name="Interface language" Target="UI_LANGUAGE" Default="auto|ar_AR|bn_BN|ca_CA|cs_CZ|da_DA|de_DE|el_GR|en_US|es_ES|fr_FR|hr_HR|hu_HU|it_IT|ja_JA|ko_KO|lv_LV|nl_NL|no_NO|pl_PL|pt_BR|pt_PT|ro_RO|ru_RU|sv_SE|uk_UA|zh_CN|zh_TW" Mode="" Description="Language of the web UI and Discord notifications. auto: follows each browser's language (27 Unraid languages, English fallback; notifications then follow the reward language)." Type="Variable" Display="always" Required="true" Mask="false">auto</Config>
   <Config Name="Discord webhook" Target="DISCORD_WEBHOOK" Default="" Mode="" Description="Optional Discord webhook URL (https://discord.com/api/webhooks/...) to be notified of claims and errors." Type="Variable" Display="always" Required="false" Mask="true"/>
   <Config Name="Notifications" Target="NOTIFY" Default="all|errors|none" Mode="" Description="all: claims and errors. errors: only problems (e.g. expired token). none: no notification." Type="Variable" Display="always" Required="false" Mask="false">all</Config>
   <Config Name="Web UI password" Target="WEBUI_PASSWORD" Default="" Mode="" Description="Optional. When set, the web UI asks for it (any user name). Recommended if other people use your network." Type="Variable" Display="always" Required="false" Mask="true"/>
   <Config Name="Account token" Target="ACCOUNT_TOKEN" Default="" Mode="" Description="Optional: SKPORT ACCOUNT_TOKEN cookie value(s), comma separated. Easier: leave empty and connect your account from the web UI." Type="Variable" Display="advanced" Required="false" Mask="true"/>
-  <Config Name="Account name" Target="ACCOUNT_NAME" Default="" Mode="" Description="Optional display name for the account(s) defined with ACCOUNT_TOKEN." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+  <Config Name="Account name" Target="ACCOUNT_NAME" Default="" Mode="" Description="Optional display name for the account(s) defined with ACCOUNT_TOKEN. Empty: the in-game nickname is used." Type="Variable" Display="advanced" Required="false" Mask="false"/>
   <Config Name="Retry after error (minutes)" Target="RETRY_INTERVAL" Default="15" Mode="" Description="Delay before retrying after a network or server error (5-240)." Type="Variable" Display="advanced" Required="false" Mask="false">15</Config>
   <Config Name="PUID" Target="PUID" Default="99" Mode="" Description="User ID owning the /config files (Unraid default: 99 = nobody)." Type="Variable" Display="advanced" Required="false" Mask="false">99</Config>
   <Config Name="PGID" Target="PGID" Default="100" Mode="" Description="Group ID owning the /config files (Unraid default: 100 = users)." Type="Variable" Display="advanced" Required="false" Mask="false">100</Config>

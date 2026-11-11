@@ -15,7 +15,8 @@ This is a community project, not affiliated with GRYPHLINE, Hypergryph or SKPORT
 - Log in with the **account token** (`ACCOUNT_TOKEN` cookie) or with **email + password**.
 - Supports multiple accounts and every Endfield character of each account, with the server detected automatically.
 - Checks every 2 hours by default and claims as soon as the reward is available, whatever the reset time of the server region. After a network or server error, it retries after 15 minutes.
-- Web UI in English or French: monthly calendar, first-three-logins bonus, last rewards, history and a "Claim now" button.
+- Web UI in the 27 languages offered by Unraid, picked automatically from the browser or fixed with `UI_LANGUAGE`; Arabic is shown right-to-left. It shows the monthly calendar, the first-three-logins bonus, the last rewards, the history and a "Claim now" button.
+- Accounts are named automatically after the in-game nickname.
 - Optional Discord notifications for claims, errors and expired tokens.
 - Small image (~50 MB) with plain Python and no third-party packages. After startup the container switches to `99:100` (nobody:users).
 
@@ -45,7 +46,7 @@ Updates are offered in the Docker tab like for any other container.
 1. Open <https://game.skport.com/endfield/sign-in> and log in.
 2. Press **F12**. In Chrome/Edge, open **Application → Cookies**. In Firefox, open **Storage → Cookies**.
 3. Select `https://game.skport.com` and copy the value of the **`ACCOUNT_TOKEN`** cookie.
-4. Paste it into the web UI and click **Connect account**. The token is validated before it is saved, then a first check starts.
+4. Paste it into the web UI and click **Connect account**. The token is validated before it is saved and the account is named after your in-game nickname, then a first check starts.
 
 **Email + password**
 
@@ -58,12 +59,13 @@ If a token expires and no password is saved, the UI shows **Action required** an
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `CHECK_INTERVAL` | `120` | Minutes between checks (30–720). |
-| `SKPORT_LANGUAGE` | `en` | Reward name language: `en`, `fr_FR`, `de_DE`, `it_IT`, `es_MX`, `pt_BR`, `ru_RU`, `ja`, `ko`, `zh_Hans`, `zh_Hant`, `id_ID`, `th_TH`, `vi_VN`. `fr_FR` also switches Discord notifications to French. |
+| `UI_LANGUAGE` | `auto` | Language of the web UI and Discord notifications. `auto` follows each browser's language; or one of the Unraid locales: `ar_AR`, `bn_BN`, `ca_CA`, `cs_CZ`, `da_DA`, `de_DE`, `el_GR`, `en_US`, `es_ES`, `fr_FR`, `hr_HR`, `hu_HU`, `it_IT`, `ja_JA`, `ko_KO`, `lv_LV`, `nl_NL`, `no_NO`, `pl_PL`, `pt_BR`, `pt_PT`, `ro_RO`, `ru_RU`, `sv_SE`, `uk_UA`, `zh_CN`, `zh_TW`. With `auto`, notifications follow `SKPORT_LANGUAGE`. |
+| `SKPORT_LANGUAGE` | `en` | Reward name language, as supported by SKPORT: `en`, `fr_FR`, `de_DE`, `it_IT`, `es_MX`, `pt_BR`, `ru_RU`, `ja`, `ko`, `zh_Hans`, `zh_Hant`, `id_ID`, `th_TH`, `vi_VN`. |
 | `DISCORD_WEBHOOK` | empty | Optional Discord webhook URL. |
 | `NOTIFY` | `all` | `all` sends claims and errors, `errors` sends problems only, `none` disables notifications. |
 | `WEBUI_PASSWORD` | empty | Protects the UI with a password. Any user name is accepted. |
 | `ACCOUNT_TOKEN` | empty | Advanced: comma-separated tokens, used instead of the web UI. |
-| `ACCOUNT_NAME` | empty | Display name for accounts defined with `ACCOUNT_TOKEN`. |
+| `ACCOUNT_NAME` | empty | Display name for accounts defined with `ACCOUNT_TOKEN`. Empty: the in-game nickname is used. |
 | `RETRY_INTERVAL` | `15` | Minutes before retrying after an error (5–240). |
 | `PUID` / `PGID` | `99` / `100` | Owner of the `/config` files. |
 | `LOG_LEVEL` | `INFO` | `DEBUG`, `INFO`, `WARNING` or `ERROR`. |
@@ -77,13 +79,17 @@ Unraid passes `TZ` automatically, so displayed times and logs use the server tim
 - UI actions are protected against CSRF: they require a token and a JSON body, and the request origin is checked. A strict CSP is applied.
 - The container contacts only `as.gryphline.com`, `zonai.skport.com` and your Discord webhook if one is configured. Your browser loads reward icons from `static.skport.com`.
 
+## Translations
+
+The interface catalogs live in [`app/endfield_checkin/static/lang/`](app/endfield_checkin/static/lang/), one JSON file per Unraid locale, with `en_US.json` as the master. A missing or empty entry falls back to English. Most translations were generated automatically and have not been reviewed by native speakers, so corrections are welcome. Keep the keys and placeholders such as `{n}` or `{name}` unchanged, use plain text only, then run the tests.
+
 ## Limitations
 
 The bot relies on the undocumented API of the SKPORT website, reverse-engineered from the official page and from open-source projects. It may stop working if SKPORT changes that API. Automating sign-ins may also go against the service's terms of use, so use it at your own risk.
 
 ## Development
 
-Run the tests (25, using a bundled fake SKPORT server) and build the image:
+Run the tests (they use a bundled fake SKPORT server) and build the image:
 
 ```bash
 cd tests && python3 -m unittest discover -s . -t . -v

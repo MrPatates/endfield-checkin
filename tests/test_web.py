@@ -77,6 +77,12 @@ class WebAppTest(WebTest):
         for name in ("app.js", "style.css", "icon.svg"):
             self.assertEqual(self.request(f"/static/{name}")[0], 200)
         self.assertEqual(self.request("/static/../web.py")[0], 404)
+        for name in ("i18n.js", "lang/languages.json", "lang/fr_FR.json"):
+            status, _, headers = self.request(f"/static/{name}")
+            self.assertEqual(status, 200, name)
+        self.assertTrue(headers["Content-Type"].startswith("application/json"))
+        self.assertEqual(self.request("/static/lang/../app.js")[0], 404)
+        self.assertEqual(json.loads(self.request("/api/state")[1])["settings"]["ui_language"], "auto")
         self.assertEqual(self.request("/healthz")[1], b"ok")
 
     def test_add_account_flow_and_no_secret_leak(self):
@@ -100,6 +106,16 @@ class WebAppTest(WebTest):
         self.assertEqual([a["state"]["status"] for a in state["accounts"]], ["claimed", "done"])
         for secret in (VALID_TOKEN, ENV_TOKEN, "cred-", "sign-"):
             self.assertNotIn(secret.encode(), body)
+
+    def test_account_named_after_in_game_nickname(self):
+        status, body, _ = self.request("/api/accounts", {"method": "token", "token": VALID_TOKEN})
+        self.assertEqual(status, 201, body)
+        account = self.store.get_account(json.loads(body)["id"])
+        self.assertEqual((account["name"], account["auto_name"]), ("Endmin", True))
+        self.store.delete_account(account["id"])
+        status, body, _ = self.request("/api/accounts", {"method": "token", "token": VALID_TOKEN, "role": "3_1_2"})
+        account = self.store.get_account(json.loads(body)["id"])
+        self.assertEqual(account["name"], "Account 2", "no nickname lookup with a manual role")
 
     def test_password_login_not_stored_unless_asked(self):
         status, _, _ = self.request("/api/accounts", {"method": "password", "email": "user@example.com",

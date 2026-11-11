@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 from dataclasses import dataclass
@@ -15,6 +16,13 @@ log = logging.getLogger(__name__)
 LANGUAGES = ("en", "fr_FR", "de_DE", "it_IT", "es_MX", "pt_BR", "ru_RU",
              "ja", "ko", "zh_Hans", "zh_Hant", "id_ID", "th_TH", "vi_VN")
 NOTIFY_MODES = ("all", "errors", "none")
+# Interface languages: the locales offered by Unraid (static/lang/languages.json).
+LANG_DIR = Path(__file__).with_name("static") / "lang"
+UI_LANGUAGES = tuple(json.loads((LANG_DIR / "languages.json").read_text(encoding="utf-8")))
+# Discord notifications follow UI_LANGUAGE, or the reward language when the UI is on "auto".
+SKPORT_TO_UI = {"en": "en_US", "fr_FR": "fr_FR", "de_DE": "de_DE", "it_IT": "it_IT", "es_MX": "es_ES",
+                "pt_BR": "pt_BR", "ru_RU": "ru_RU", "ja": "ja_JA", "ko": "ko_KO", "zh_Hans": "zh_CN",
+                "zh_Hant": "zh_TW"}
 
 
 def _int(env: Mapping[str, str], name: str, default: int, low: int, high: int) -> int:
@@ -50,6 +58,7 @@ class Settings:
     retry_interval_min: int = 15
     startup_delay_s: int = 15
     language: str = "en"
+    ui_language: str = "auto"
     discord_webhook: str = ""
     notify: str = "all"
     webui_password: str = ""
@@ -76,6 +85,7 @@ class Settings:
             retry_interval_min=_int(env, "RETRY_INTERVAL", 15, 5, 240),
             startup_delay_s=_int(env, "STARTUP_DELAY", 15, 0, 3600),
             language=_choice(env, "SKPORT_LANGUAGE", "en", LANGUAGES),
+            ui_language=_choice(env, "UI_LANGUAGE", "auto", ("auto",) + UI_LANGUAGES),
             discord_webhook=webhook,
             notify=_choice(env, "NOTIFY", "all", NOTIFY_MODES),
             webui_password=env.get("WEBUI_PASSWORD", ""),
@@ -88,3 +98,9 @@ class Settings:
             as_base=env.get("SKPORT_AS_BASE", DEFAULT_AS_BASE),
             zonai_base=env.get("SKPORT_ZONAI_BASE", DEFAULT_ZONAI_BASE),
         )
+
+    @property
+    def notification_language(self) -> str:
+        if self.ui_language != "auto":
+            return self.ui_language
+        return SKPORT_TO_UI.get(self.language, "en_US")
