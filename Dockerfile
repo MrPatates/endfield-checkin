@@ -1,5 +1,5 @@
 # python:3.14-alpine (multi-arch index), pinned for reproducible builds.
-FROM docker.io/library/python@sha256:a18b20ad69e74df6cf6d2e1b1a260d7a1ecf5380fd83b310f83ba88c461cf894
+FROM docker.io/library/python@sha256:8c9a3bf2d6dea60d60a2ae2a07c2b2fb1e7d8daed64b146b6792c74ae0d62ac4
 
 ARG APP_VERSION=dev
 LABEL org.opencontainers.image.title="Endfield Check-in" \
