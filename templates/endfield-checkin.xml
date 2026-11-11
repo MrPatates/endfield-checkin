@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Container version="2">
-  <Name>endfield-checkin</Name>
+  <Name>Endfield-Check-in</Name>
   <Repository>ghcr.io/mrpatates/endfield-checkin:latest</Repository>
   <Registry>https://github.com/MrPatates/endfield-checkin/pkgs/container/endfield-checkin</Registry>
   <Network>bridge</Network>

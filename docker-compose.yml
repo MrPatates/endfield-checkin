@@ -2,7 +2,7 @@
 services:
   endfield-checkin:
     image: ghcr.io/mrpatates/endfield-checkin:latest
-    container_name: endfield-checkin
+    container_name: Endfield-Check-in
     restart: unless-stopped
     ports:
       - "8080:8080"
