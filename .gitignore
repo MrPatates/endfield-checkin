@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+/config/
+/dist/
+.env
+.env.*
+*.pem
+*.key
+
+# Local test server credentials - never commit
+unraid.txt
+*.txt.local

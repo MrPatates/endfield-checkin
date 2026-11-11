@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>Endfield Check-in</title>
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="/static/icon.svg" alt="" width="40" height="40">
+      <div>
+        <h1>Endfield Check-in</h1>
+        <span class="muted small" id="version"></span>
+      </div>
+    </div>
+    <div class="next">
+      <span class="muted small" data-i18n="nextCheck"></span>
+      <strong id="next-run">—</strong>
+    </div>
+    <button type="button" id="run-all" class="btn primary" data-i18n="runAll"></button>
+  </header>
+
+  <main>
+    <div id="banner" class="banner" hidden></div>
+    <section id="accounts" aria-live="polite"></section>
+
+    <section class="card" id="add-card">
+      <h2 data-i18n="addTitle"></h2>
+      <p class="muted" data-i18n="addIntro"></p>
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" data-method="token" aria-selected="true" data-i18n="methodToken"></button>
+        <button type="button" role="tab" data-method="password" aria-selected="false" data-i18n="methodPassword"></button>
+      </div>
+      <form id="add-form" autocomplete="off" novalidate>
+        <label class="field">
+          <span data-i18n="name"></span>
+          <input name="name" maxlength="60" data-i18n-placeholder="namePlaceholder">
+        </label>
+
+        <div data-panel="token">
+          <label class="field">
+            <span>ACCOUNT_TOKEN</span>
+            <textarea name="token" rows="3" spellcheck="false" autocapitalize="off" data-i18n-placeholder="tokenPlaceholder"></textarea>
+          </label>
+          <details class="help">
+            <summary data-i18n="tokenHelpTitle"></summary>
+            <p><a href="https://game.skport.com/endfield/sign-in" target="_blank" rel="noopener noreferrer">game.skport.com/endfield/sign-in ↗</a></p>
+            <ol data-i18n-list="tokenHelp"></ol>
+          </details>
+        </div>
+
+        <div data-panel="password" hidden>
+          <label class="field">
+            <span data-i18n="email"></span>
+            <input name="email" type="email" autocomplete="off">
+          </label>
+          <label class="field">
+            <span data-i18n="password"></span>
+            <input name="password" type="password" autocomplete="new-password">
+          </label>
+          <label class="check">
+            <input name="remember" type="checkbox">
+            <span data-i18n="remember"></span>
+          </label>
+          <p class="muted small" data-i18n="passwordNote"></p>
+        </div>
+
+        <details class="help">
+          <summary data-i18n="advanced"></summary>
+          <label class="field">
+            <span data-i18n="roleOverride"></span>
+            <input name="role" pattern="\d+_\d+_\d+" placeholder="3_1234567890_2">
+          </label>
+          <p class="muted small" data-i18n="roleOverrideHelp"></p>
+        </details>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary" data-i18n="connect"></button>
+          <span id="add-status" class="form-status" role="status"></span>
+        </div>
+      </form>
+    </section>
+
+    <div class="columns">
+      <section class="card">
+        <h2 data-i18n="settingsTitle"></h2>
+        <dl id="settings" class="settings"></dl>
+        <p class="muted small" data-i18n="settingsHint"></p>
+      </section>
+      <section class="card">
+        <h2 data-i18n="historyTitle"></h2>
+        <ul id="history" class="history"></ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="muted small" data-i18n="disclaimer"></footer>
+
+  <template id="account-template">
+    <article class="card account">
+      <div class="account-head">
+        <div>
+          <h2 class="account-name"></h2>
+          <div class="muted small account-meta"></div>
+        </div>
+        <span class="status"></span>
+      </div>
+      <p class="account-message"></p>
+      <div class="muted small account-times"></div>
+      <div class="roles"></div>
+      <div class="account-actions">
+        <button type="button" class="btn" data-action="run"></button>
+        <button type="button" class="btn danger" data-action="delete"></button>
+      </div>
+    </article>
+  </template>
+</body>
+</html>

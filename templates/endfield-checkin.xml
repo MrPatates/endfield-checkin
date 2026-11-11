@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>endfield-checkin</Name>
+  <Repository>ghcr.io/mrpatates/endfield-checkin:latest</Repository>
+  <Registry>https://github.com/MrPatates/endfield-checkin/pkgs/container/endfield-checkin</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/MrPatates/endfield-checkin/issues</Support>
+  <Project>https://github.com/MrPatates/endfield-checkin</Project>
+  <ReadMe>https://github.com/MrPatates/endfield-checkin#readme</ReadMe>
+  <Overview>Automatically claims the SKPORT daily check-in rewards of Arknights: Endfield (game.skport.com sign-in page) for every character bound to your accounts. Connect an account once from the web UI (account token or email/password) and the bot checks the sign-in status every 2 hours by default, claiming the reward as soon as it is available, whatever the server region or reset time. The web UI shows the monthly reward calendar, the claimed rewards and a history; optional Discord notifications. Multiple accounts supported. Settings and tokens are stored in /config. Community project, not affiliated with GRYPHLINE, Hypergryph or SKPORT. It relies on the unofficial SKPORT web API, which may change, and automating sign-ins may go against the service terms: use at your own risk.</Overview>
+  <Category>Tools:Utilities</Category>
+  <WebUI>http://[IP]:[PORT:8080]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/MrPatates/endfield-checkin/main/templates/endfield-checkin.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/MrPatates/endfield-checkin/main/icon.png</Icon>
+  <ExtraSearchTerms>arknights endfield skport gryphline hypergryph daily login check-in sign-in attendance rewards</ExtraSearchTerms>
+  <Screenshot>https://raw.githubusercontent.com/MrPatates/endfield-checkin/main/docs/screenshot.png</Screenshot>
+  <License>GPL-3.0-or-later</License>
+  <MinVer>6.12.0</MinVer>
+  <Requires>Internet access and a SKPORT account with at least one Arknights: Endfield character.</Requires>
+  <Changes>
+### 2026.11.11
+- First release.
+  </Changes>
+  <Date>2026-11-11</Date>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Config Name="Web UI port" Target="8080" Default="8080" Mode="tcp" Description="Port of the web UI where you connect your SKPORT account and see the rewards." Type="Port" Display="always" Required="true" Mask="false">8080</Config>
+  <Config Name="Appdata" Target="/config" Default="/mnt/user/appdata/endfield-checkin" Mode="rw" Description="Accounts (tokens), last results and history. Keep it private: it contains your account tokens." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/endfield-checkin</Config>
+  <Config Name="Check interval (minutes)" Target="CHECK_INTERVAL" Default="120" Mode="" Description="How often the sign-in status is checked (30-720). Each check is one light request per character; the reward is claimed as soon as it is available." Type="Variable" Display="always" Required="true" Mask="false">120</Config>
+  <Config Name="Reward language" Target="SKPORT_LANGUAGE" Default="en|fr_FR|de_DE|it_IT|es_MX|pt_BR|ru_RU|ja|ko|zh_Hans|zh_Hant|id_ID|th_TH|vi_VN" Mode="" Description="Language of the reward names shown in the web UI and notifications. fr_FR also switches Discord notifications to French." Type="Variable" Display="always" Required="true" Mask="false">en</Config>
+  <Config Name="Discord webhook" Target="DISCORD_WEBHOOK" Default="" Mode="" Description="Optional Discord webhook URL (https://discord.com/api/webhooks/...) to be notified of claims and errors." Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="Notifications" Target="NOTIFY" Default="all|errors|none" Mode="" Description="all: claims and errors. errors: only problems (e.g. expired token). none: no notification." Type="Variable" Display="always" Required="false" Mask="false">all</Config>
+  <Config Name="Web UI password" Target="WEBUI_PASSWORD" Default="" Mode="" Description="Optional. When set, the web UI asks for it (any user name). Recommended if other people use your network." Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="Account token" Target="ACCOUNT_TOKEN" Default="" Mode="" Description="Optional: SKPORT ACCOUNT_TOKEN cookie value(s), comma separated. Easier: leave empty and connect your account from the web UI." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+  <Config Name="Account name" Target="ACCOUNT_NAME" Default="" Mode="" Description="Optional display name for the account(s) defined with ACCOUNT_TOKEN." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+  <Config Name="Retry after error (minutes)" Target="RETRY_INTERVAL" Default="15" Mode="" Description="Delay before retrying after a network or server error (5-240)." Type="Variable" Display="advanced" Required="false" Mask="false">15</Config>
+  <Config Name="PUID" Target="PUID" Default="99" Mode="" Description="User ID owning the /config files (Unraid default: 99 = nobody)." Type="Variable" Display="advanced" Required="false" Mask="false">99</Config>
+  <Config Name="PGID" Target="PGID" Default="100" Mode="" Description="Group ID owning the /config files (Unraid default: 100 = users)." Type="Variable" Display="advanced" Required="false" Mask="false">100</Config>
+  <Config Name="Log level" Target="LOG_LEVEL" Default="INFO|DEBUG|WARNING|ERROR" Mode="" Description="Container log verbosity. Tokens are never written to the logs." Type="Variable" Display="advanced" Required="false" Mask="false">INFO</Config>
+</Container>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CommunityApplications>
+  <Profile>Community-maintained Unraid applications by MrPatates. Endfield Check-in automatically claims the SKPORT daily check-in rewards of Arknights: Endfield from a small container with a web UI. Source code, documentation and support are available on GitHub; report issues at https://github.com/MrPatates/endfield-checkin/issues.</Profile>
+  <Icon>https://raw.githubusercontent.com/MrPatates/endfield-checkin/main/icon.png</Icon>
+  <WebPage>https://github.com/MrPatates/endfield-checkin</WebPage>
+</CommunityApplications>

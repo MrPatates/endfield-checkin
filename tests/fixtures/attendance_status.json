@@ -1,0 +1,312 @@
+{
+ "code": 0,
+ "message": "OK",
+ "timestamp": "1794426889",
+ "data": {
+  "currentTs": "1794426889",
+  "calendar": [
+   {
+    "awardId": "endfield_attendance_1_2",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_4_2",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_7_2000",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_8_80",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_4_2",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_6_2",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_1_3",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_7_3000",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_4_3",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_1_3",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_7_2000",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_8_80",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_6_3",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_1_3",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_4_3",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_7_3000",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_3_2",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_5_2",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_2_5",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_8_100",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_6_5",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_3_3",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_5_3",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_7_3000",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_1_5",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_4_5",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_3_5",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_5_5",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_7_2000",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_7_2000",
+    "available": false,
+    "done": false
+   }
+  ],
+  "first": [
+   {
+    "awardId": "endfield_attendance_8_120",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_8_90",
+    "available": false,
+    "done": false
+   },
+   {
+    "awardId": "endfield_attendance_8_90",
+    "available": false,
+    "done": false
+   }
+  ],
+  "resourceInfoMap": {
+   "endfield_attendance_1_2": {
+    "id": "endfield_attendance_1_2",
+    "count": 2,
+    "name": "Intermediate Combat Record",
+    "icon": "https://static.skport.com/asset/endfield_attendance/921A397E2765462C009B939E0CD92606.png"
+   },
+   "endfield_attendance_1_3": {
+    "id": "endfield_attendance_1_3",
+    "count": 3,
+    "name": "Intermediate Combat Record",
+    "icon": "https://static.skport.com/asset/endfield_attendance/921A397E2765462C009B939E0CD92606.png"
+   },
+   "endfield_attendance_1_5": {
+    "id": "endfield_attendance_1_5",
+    "count": 5,
+    "name": "Intermediate Combat Record",
+    "icon": "https://static.skport.com/asset/endfield_attendance/921A397E2765462C009B939E0CD92606.png"
+   },
+   "endfield_attendance_2_5": {
+    "id": "endfield_attendance_2_5",
+    "count": 5,
+    "name": "Elementary Cognitive Carrier",
+    "icon": "https://static.skport.com/asset/endfield_attendance/ed34d5a121dbc81da6f6991792ff97f6.png"
+   },
+   "endfield_attendance_3_2": {
+    "id": "endfield_attendance_3_2",
+    "count": 2,
+    "name": "Advanced Combat Record",
+    "icon": "https://static.skport.com/asset/endfield_attendance/7f6ce8ae13546508255b89a4d8571fe3.png"
+   },
+   "endfield_attendance_3_3": {
+    "id": "endfield_attendance_3_3",
+    "count": 3,
+    "name": "Advanced Combat Record",
+    "icon": "https://static.skport.com/asset/endfield_attendance/7f6ce8ae13546508255b89a4d8571fe3.png"
+   },
+   "endfield_attendance_3_5": {
+    "id": "endfield_attendance_3_5",
+    "count": 5,
+    "name": "Advanced Combat Record",
+    "icon": "https://static.skport.com/asset/endfield_attendance/7f6ce8ae13546508255b89a4d8571fe3.png"
+   },
+   "endfield_attendance_4_2": {
+    "id": "endfield_attendance_4_2",
+    "count": 2,
+    "name": "Arms INSP Kit",
+    "icon": "https://static.skport.com/asset/endfield_attendance/0dea0bc0fd87138df322e8a254a6999f.png"
+   },
+   "endfield_attendance_4_3": {
+    "id": "endfield_attendance_4_3",
+    "count": 3,
+    "name": "Arms INSP Kit",
+    "icon": "https://static.skport.com/asset/endfield_attendance/0dea0bc0fd87138df322e8a254a6999f.png"
+   },
+   "endfield_attendance_4_5": {
+    "id": "endfield_attendance_4_5",
+    "count": 5,
+    "name": "Arms INSP Kit",
+    "icon": "https://static.skport.com/asset/endfield_attendance/0dea0bc0fd87138df322e8a254a6999f.png"
+   },
+   "endfield_attendance_5_2": {
+    "id": "endfield_attendance_5_2",
+    "count": 2,
+    "name": "Arms INSP Set",
+    "icon": "https://static.skport.com/asset/endfield_attendance/90403112f070c14859d107b530ae5851.png"
+   },
+   "endfield_attendance_5_3": {
+    "id": "endfield_attendance_5_3",
+    "count": 3,
+    "name": "Arms INSP Set",
+    "icon": "https://static.skport.com/asset/endfield_attendance/90403112f070c14859d107b530ae5851.png"
+   },
+   "endfield_attendance_5_5": {
+    "id": "endfield_attendance_5_5",
+    "count": 5,
+    "name": "Arms INSP Set",
+    "icon": "https://static.skport.com/asset/endfield_attendance/90403112f070c14859d107b530ae5851.png"
+   },
+   "endfield_attendance_6_2": {
+    "id": "endfield_attendance_6_2",
+    "count": 2,
+    "name": "Protoprism",
+    "icon": "https://static.skport.com/asset/endfield_attendance/0c1e8cf15711a7d59aa7d8786b533cf1.png"
+   },
+   "endfield_attendance_6_3": {
+    "id": "endfield_attendance_6_3",
+    "count": 3,
+    "name": "Protoprism",
+    "icon": "https://static.skport.com/asset/endfield_attendance/0c1e8cf15711a7d59aa7d8786b533cf1.png"
+   },
+   "endfield_attendance_6_5": {
+    "id": "endfield_attendance_6_5",
+    "count": 5,
+    "name": "Protoprism",
+    "icon": "https://static.skport.com/asset/endfield_attendance/0c1e8cf15711a7d59aa7d8786b533cf1.png"
+   },
+   "endfield_attendance_7_2000": {
+    "id": "endfield_attendance_7_2000",
+    "count": 2000,
+    "name": "Talosian Credit Notes|T-Creds",
+    "icon": "https://static.skport.com/asset/endfield_attendance/2a58a0e85f39092433842ccd62324785.png"
+   },
+   "endfield_attendance_7_3000": {
+    "id": "endfield_attendance_7_3000",
+    "count": 3000,
+    "name": "Talosian Credit Notes|T-Creds",
+    "icon": "https://static.skport.com/asset/endfield_attendance/2a58a0e85f39092433842ccd62324785.png"
+   },
+   "endfield_attendance_8_100": {
+    "id": "endfield_attendance_8_100",
+    "count": 100,
+    "name": "Oroberyl",
+    "icon": "https://static.skport.com/asset/endfield_attendance/8ed434a6cdb173c96ed0572115112f93.png"
+   },
+   "endfield_attendance_8_120": {
+    "id": "endfield_attendance_8_120",
+    "count": 120,
+    "name": "Oroberyl",
+    "icon": "https://static.skport.com/asset/endfield_attendance/8ed434a6cdb173c96ed0572115112f93.png"
+   },
+   "endfield_attendance_8_80": {
+    "id": "endfield_attendance_8_80",
+    "count": 80,
+    "name": "Oroberyl",
+    "icon": "https://static.skport.com/asset/endfield_attendance/8ed434a6cdb173c96ed0572115112f93.png"
+   },
+   "endfield_attendance_8_90": {
+    "id": "endfield_attendance_8_90",
+    "count": 90,
+    "name": "Oroberyl",
+    "icon": "https://static.skport.com/asset/endfield_attendance/8ed434a6cdb173c96ed0572115112f93.png"
+   }
+  },
+  "hasToday": false
+ }
+}

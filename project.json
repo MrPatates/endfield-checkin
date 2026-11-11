@@ -1,0 +1,5 @@
+{
+    "repository": "MrPatates/endfield-checkin",
+    "image": "ghcr.io/mrpatates/endfield-checkin",
+    "license": "GPL-3.0-or-later"
+}
